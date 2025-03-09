@@ -49,6 +49,19 @@ export const createJobApplication = asyncHandler(async (req, res) => {
         )
       );
   }
+  const existingApplication = await JobApplication.findOne({
+    fullname,
+    email,
+    phone,
+    applied_position,
+  });
+  if (existingApplication) {
+    return res
+      .status(409)
+      .json(
+        new ApiResponse(409, {}, "This application has already been submitted.")
+      );
+  }
   let resumeUrl, otherDocumentUrl;
   if (req.files) {
     if (resume) {

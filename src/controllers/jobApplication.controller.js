@@ -2,7 +2,6 @@ import { JobApplication } from "../models/jobApplication.model.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadFiles, deleteFiles } from "../utils/cloudinary.js";
-import { sendTelegramMessage } from "../utils/telegramHandler.js";
 
 export const getJobApplication = asyncHandler(async (req, res) => {
   try {
@@ -104,8 +103,6 @@ export const createJobApplication = asyncHandler(async (req, res) => {
         .status(500)
         .json(new ApiResponse(500, {}, "Failed to submit job application."));
     }
-    const message = `Dear Admin,\nNew Job Application Received!\n\nName: ${fullname}\nEmail: ${email}\nPhone: ${phone}\nApplied Position: ${applied_position}\n\nPlease log in to review the application.`;
-    await sendTelegramMessage(message);
     return res
       .status(201)
       .json(

@@ -6,12 +6,22 @@ const connectDB = async () => {
       `${process.env.MONGODB_URI}/${process.env.DB_NAME}`
     );
     console.log(
-      `MongoDB connected !! DB HOST: ${connectionInstance.connection.host}`
+      `MongoDB connection successful. Connected to host: ${connectionInstance.connection.host}`
     );
   } catch (error) {
-    console.error("MongoDB connection failed:", error);
-    process.exit(1);
+    console.error("Failed to connect to MongoDB", error);
+    throw error; // Propagate the error to the caller
   }
 };
 
-export default connectDB;
+const closeDB = async () => {
+  try {
+    await mongoose.connection.close();
+    console.log("MongoDB connection closed successfully.");
+  } catch (error) {
+    console.error("Error while closing MongoDB connection", error);
+    throw error; // Propagate the error to the caller
+  }
+};
+
+export { connectDB, closeDB };

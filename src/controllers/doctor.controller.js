@@ -96,8 +96,10 @@ export const editDoctor = asyncHandler(async (req, res) => {
   }
   let profile_image = doctor.profile_image;
   if (req.file) {
-    const publicId = doctor.profile_image.split("/").pop().split(".")[0];
-    await deleteFiles([publicId]);
+    if (profile_image) {
+      const publicId = doctor.profile_image.split("/").pop().split(".")[0];
+      await deleteFiles([publicId]);
+    }
     const { successfulUploads, failedUploads } = await uploadFiles([req.file]);
     if (failedUploads.length > 0 || successfulUploads.length === 0) {
       return res
@@ -142,8 +144,10 @@ export const deleteDoctor = asyncHandler(async (req, res) => {
   if (!doctor) {
     return res.status(404).json(new ApiResponse(404, {}, "Doctor not found."));
   }
-  const publicId = doctor.profile_image.split("/").pop().split(".")[0];
-  await deleteFiles([publicId]);
+  if (doctor.profile_image) {
+    const publicId = doctor.profile_image.split("/").pop().split(".")[0];
+    await deleteFiles([publicId]);
+  }
   try {
     const deletedDoctor = await Doctor.findByIdAndDelete(id);
     if (!deletedDoctor) {

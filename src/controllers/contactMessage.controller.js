@@ -1,6 +1,7 @@
 import { ContactMessage } from "../models/contactMessage.model.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { sendTelegramMessage } from "../utils/telegramHandler.js";
 
 export const getContactMessage = asyncHandler(async (req, res) => {
   try {
@@ -48,6 +49,8 @@ export const createContactMessage = asyncHandler(async (req, res) => {
         .status(500)
         .json(new ApiResponse(500, {}, "Failed to submit contact message."));
     }
+    const message = `Dear Admin,\nNew Contact Message Received!\n\nName: ${fullname}\Phone: ${phone}\nEmail: ${email}\nMessage: ${message}\n\nPlease log in to review the message.`;
+    await sendTelegramMessage(message);
     return res
       .status(201)
       .json(

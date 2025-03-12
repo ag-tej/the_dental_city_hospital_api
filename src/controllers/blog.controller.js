@@ -5,7 +5,7 @@ import { uploadFiles, deleteFiles } from "../utils/cloudinary.js";
 
 export const getAllBlogsWithoutContent = asyncHandler(async (req, res) => {
   try {
-    const blogs = await Blog.find().select("-content");
+    const blogs = await Blog.find().select("-content").sort({ createdAt: -1 });
     if (!blogs) {
       return res.status(404).json(new ApiResponse(404, {}, "No blogs found."));
     }
@@ -21,7 +21,7 @@ export const getAllBlogsWithoutContent = asyncHandler(async (req, res) => {
 
 export const getAllBlogs = asyncHandler(async (req, res) => {
   try {
-    const blogs = await Blog.find();
+    const blogs = await Blog.find().sort({ createdAt: -1 });
     if (!blogs) {
       return res.status(404).json(new ApiResponse(404, {}, "No blogs found."));
     }
@@ -131,7 +131,7 @@ export const editBlog = asyncHandler(async (req, res) => {
     }
     return res
       .status(200)
-      .json(new ApiResponse(200, updatedBlog, "Blog updated successfully."));
+      .json(new ApiResponse(200, {}, "Blog updated successfully."));
   } catch (error) {
     return res
       .status(500)
@@ -156,7 +156,7 @@ export const deleteBlog = asyncHandler(async (req, res) => {
     }
     return res
       .status(200)
-      .json(new ApiResponse(200, deletedBlog, "Blog deleted successfully."));
+      .json(new ApiResponse(200, {}, "Blog deleted successfully."));
   } catch (error) {
     return res
       .status(500)

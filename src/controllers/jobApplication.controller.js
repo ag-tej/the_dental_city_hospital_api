@@ -5,7 +5,7 @@ import { uploadFiles, deleteFiles } from "../utils/cloudinary.js";
 
 export const getJobApplication = asyncHandler(async (req, res) => {
   try {
-    const jobApplications = await JobApplication.find();
+    const jobApplications = await JobApplication.find().sort({ createdAt: -1 });
     if (!jobApplications) {
       return res
         .status(404)
@@ -154,13 +154,7 @@ export const deleteJobApplication = asyncHandler(async (req, res) => {
     }
     return res
       .status(200)
-      .json(
-        new ApiResponse(
-          200,
-          deletedJobApplication,
-          "Job application deleted successfully."
-        )
-      );
+      .json(new ApiResponse(200, {}, "Job application deleted successfully."));
   } catch (error) {
     return res
       .status(500)
@@ -185,7 +179,7 @@ export const changeReadStatus = asyncHandler(async (req, res) => {
       .json(
         new ApiResponse(
           200,
-          jobApplication,
+          {},
           `Read status updated to ${
             jobApplication.read_status ? "read" : "unread"
           } successfully.`

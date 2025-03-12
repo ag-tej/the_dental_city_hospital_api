@@ -31,7 +31,7 @@ export const getCurrentOpening = asyncHandler(async (req, res) => {
 
 export const getVacancy = asyncHandler(async (req, res) => {
   try {
-    const vacancies = await Vacancy.find();
+    const vacancies = await Vacancy.find().sort({ createdAt: -1 });
     if (!vacancies) {
       return res
         .status(404)
@@ -68,7 +68,7 @@ export const createVacancy = asyncHandler(async (req, res) => {
     }
     return res
       .status(201)
-      .json(new ApiResponse(201, vacancy, "Vacancy created successfully."));
+      .json(new ApiResponse(201, {}, "Vacancy created successfully."));
   } catch (error) {
     return res
       .status(500)
@@ -100,9 +100,7 @@ export const editVacancy = asyncHandler(async (req, res) => {
     }
     return res
       .status(200)
-      .json(
-        new ApiResponse(200, updatedVacancy, "Vacancy updated successfully.")
-      );
+      .json(new ApiResponse(200, {}, "Vacancy updated successfully."));
   } catch (error) {
     return res
       .status(500)
@@ -125,9 +123,7 @@ export const deleteVacancy = asyncHandler(async (req, res) => {
     }
     return res
       .status(200)
-      .json(
-        new ApiResponse(200, deletedVacancy, "Vacancy deleted successfully.")
-      );
+      .json(new ApiResponse(200, {}, "Vacancy deleted successfully."));
   } catch (error) {
     return res
       .status(500)

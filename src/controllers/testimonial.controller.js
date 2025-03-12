@@ -4,7 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const getTestimonial = asyncHandler(async (req, res) => {
   try {
-    const testimonials = await Testimonial.find();
+    const testimonials = await Testimonial.find().sort({ createdAt: -1 });
     if (!testimonials) {
       return res
         .status(404)
@@ -78,13 +78,7 @@ export const editTestimonial = asyncHandler(async (req, res) => {
     }
     return res
       .status(200)
-      .json(
-        new ApiResponse(
-          200,
-          updatedTestimonial,
-          "Testimonial updated successfully."
-        )
-      );
+      .json(new ApiResponse(200, {}, "Testimonial updated successfully."));
   } catch (error) {
     return res
       .status(500)
@@ -109,13 +103,7 @@ export const deleteTestimonial = asyncHandler(async (req, res) => {
     }
     return res
       .status(200)
-      .json(
-        new ApiResponse(
-          200,
-          deletedTestimonial,
-          "Testimonial deleted successfully."
-        )
-      );
+      .json(new ApiResponse(200, {}, "Testimonial deleted successfully."));
   } catch (error) {}
   return res
     .status(500)

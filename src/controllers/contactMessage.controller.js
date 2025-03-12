@@ -4,7 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const getContactMessage = asyncHandler(async (req, res) => {
   try {
-    const contactMessages = await ContactMessage.find();
+    const contactMessages = await ContactMessage.find().sort({ createdAt: -1 });
     if (!contactMessages) {
       return res
         .status(404)
@@ -88,13 +88,7 @@ export const deleteContactMessage = asyncHandler(async (req, res) => {
     }
     return res
       .status(200)
-      .json(
-        new ApiResponse(
-          200,
-          deletedContactMessage,
-          "Contact message deleted successfully."
-        )
-      );
+      .json(new ApiResponse(200, {}, "Contact message deleted successfully."));
   } catch (error) {
     return res
       .status(500)
@@ -119,7 +113,7 @@ export const changeReadStatus = asyncHandler(async (req, res) => {
       .json(
         new ApiResponse(
           200,
-          contactMessage,
+          {},
           `Read status updated to ${
             contactMessage.read_status ? "read" : "unread"
           } successfully.`

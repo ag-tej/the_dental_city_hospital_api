@@ -5,7 +5,7 @@ import { uploadFiles, deleteFiles } from "../utils/cloudinary.js";
 
 export const getDoctor = asyncHandler(async (req, res) => {
   try {
-    const doctors = await Doctor.find();
+    const doctors = await Doctor.find().sort({ createdAt: -1 });
     if (!doctors) {
       return res
         .status(404)
@@ -65,7 +65,7 @@ export const createDoctor = asyncHandler(async (req, res) => {
     }
     return res
       .status(201)
-      .json(new ApiResponse(201, doctor, "Doctor created successfully."));
+      .json(new ApiResponse(201, {}, "Doctor created successfully."));
   } catch (error) {
     return res
       .status(500)
@@ -128,9 +128,7 @@ export const editDoctor = asyncHandler(async (req, res) => {
     }
     return res
       .status(200)
-      .json(
-        new ApiResponse(200, updatedDoctor, "Doctor updated successfully.")
-      );
+      .json(new ApiResponse(200, {}, "Doctor updated successfully."));
   } catch (error) {
     return res
       .status(500)
@@ -157,9 +155,7 @@ export const deleteDoctor = asyncHandler(async (req, res) => {
     }
     return res
       .status(200)
-      .json(
-        new ApiResponse(200, deletedDoctor, "Doctor deleted successfully.")
-      );
+      .json(new ApiResponse(200, {}, "Doctor deleted successfully."));
   } catch (error) {
     return res
       .status(500)

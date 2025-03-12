@@ -4,7 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const getMailingList = asyncHandler(async (req, res) => {
   try {
-    const mailingList = await MailingList.find();
+    const mailingList = await MailingList.find().sort({ createdAt: -1 });
     if (!mailingList) {
       return res
         .status(404)
@@ -97,7 +97,7 @@ export const deleteMailingListEntry = asyncHandler(async (req, res) => {
       .json(
         new ApiResponse(
           200,
-          deletedMailingListEntry,
+          {},
           "Email removed from the mailing list successfully."
         )
       );

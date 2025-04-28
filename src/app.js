@@ -16,9 +16,10 @@ import contactMessageRoute from "./routes/contactMessage.route.js";
 import mailingListRoute from "./routes/mailingList.route.js";
 
 const app = express();
+const allowedOrigins = process.env.CORS_ORIGIN?.split(",") || [];
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: allowedOrigins,
     credentials: true,
   })
 );
